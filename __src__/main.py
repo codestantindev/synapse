@@ -43,6 +43,25 @@ from tabulate import tabulate
 from dankware import cls, clr, title, get_duration, multithread, err, rm_line
 from dankware import white, white_bright, green, green_bright, red, red_normal
 
+def error_handler(str: str):
+  cls()
+  banner = """
+ ██████████                                        ███
+░░███░░░░░█                                       ░███
+ ░███  █ ░  ████████  ████████   ██████  ████████ ░███
+ ░██████   ░░███░░███░░███░░███ ███░░███░░███░░███░███
+ ░███░░█    ░███ ░░░  ░███ ░░░ ░███ ░███ ░███ ░░░ ░███
+ ░███ ░   █ ░███      ░███     ░███ ░███ ░███     ░░░ 
+ ██████████ █████     █████    ░░██████  █████     ███
+░░░░░░░░░░ ░░░░░     ░░░░░      ░░░░░░  ░░░░░     ░░░ 
+                                                      
+                                                      
+                                                      """
+  err = str
+  console = Console(highlight=False)
+  console.print(Align.center(banner), style="blink red")
+  console.print(Align.center(err), style="red")
+
 def synapse_banner():
     cls()
     banner = """
@@ -122,24 +141,34 @@ def synapse_functions():
     console = Console(highlight=False)
     console.print(Align.center(output), style="red")
     x = input(clr("\n  > Choice: ") + red)
-    if x == "0":
-      exit()
-
-    if x == "1":
-      print("Work in Progress!")
-      time.sleep(2)
-      main()
-
-    if x == "2":
-      print("Work in Progress!")
-      time.sleep(2)
-      main()
     
-    if x == "3":
-      DoS()
-    
-    if x == "4":
-      print("Work in Progress!")
+    if x.isdigit():
+      if x == "0":
+        exit()
+
+      if x == "1":
+        error_handler("Work in progress!")
+        time.sleep(2)
+        main()
+
+      if x == "2":
+        error_handler("Work in progress!")
+        time.sleep(2)
+        main()
+
+      if x == "3":
+        DoS()
+
+      if x == "4":
+        error_handler("Work in progress!")
+        time.sleep(2)
+        main()
+      else:
+        main()
+    elif x == "":
+      main()
+    else:
+      error_handler("Please input a valid number!")
       time.sleep(2)
       main()
 
