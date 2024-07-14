@@ -1,38 +1,15 @@
 import os
-try:
+try: 
   import dankware
-except ImportError:
-  print("Trying to Install required module: dankware\n")
-  os.system('python -m pip install dankware')
-  os.system('cls')
-
-try:
   import tabulate
-except ImportError:
-  print("Trying to Install required module: tabulate\n")
-  os.system('python -m pip install tabulate')
-  os.system('cls')
-
-try:
-  import requests
-except ImportError:
-  print("Trying to Install required module: requests\n")
-  os.system('python -m pip install requests')
-  os.system('cls')
-
-try:
-  import translatepy
-except ImportError:
-  print("Trying to Install required module: translatepy\n")
-  os.system('python -m pip install translatepy')
-  os.system('cls')
-
-try:
   import rich
+  import requests
+  import translatepy
+  import subprocess
+  import pygame
 except ImportError:
-  print("Trying to Install required module: rich\n")
-  os.system('python -m pip install rich')
-  os.system('cls')
+  print("Trying to Install all required modules...\n")
+  os.system('python -m pip install -r requirements.txt')
 
 import time
 
@@ -42,7 +19,13 @@ from translatepy import Translator
 from tabulate import tabulate
 from dankware import cls, clr, title, get_duration, multithread, err, rm_line
 from dankware import white, white_bright, green, green_bright, red, red_normal
+from pygame import mixer
 
+def intro():
+  mixer.init()
+  mixer.music.load('__assets__/intro.mp3') 
+  mixer.music.set_volume(0.010)
+  mixer.music.play()
 def error_handler(str: str):
   cls()
   banner = """
@@ -163,12 +146,6 @@ def synapse_functions():
         error_handler("Work in progress!")
         time.sleep(2)
         main()
-      
-      if x == "69":
-        print("Nice!")
-        time.sleep(2)
-        main()
-        
       else:
         main()
     elif x == "":
@@ -180,6 +157,7 @@ def synapse_functions():
 
 def main():
   title("Synapse Python Tool")
+  intro()
   synapse_banner()
   synapse_motm()
   synapse_functions()

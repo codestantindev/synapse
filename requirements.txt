@@ -1,3 +1,4 @@
 dankware
 tabulate
 translatepy
+pygame
