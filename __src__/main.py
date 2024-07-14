@@ -163,6 +163,12 @@ def synapse_functions():
         error_handler("Work in progress!")
         time.sleep(2)
         main()
+      
+      if x == "69":
+        print("Nice!")
+        time.sleep(2)
+        main()
+        
       else:
         main()
     elif x == "":
