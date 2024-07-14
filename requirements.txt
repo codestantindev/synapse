@@ -2,3 +2,4 @@ dankware
 tabulate
 translatepy
 pygame
+rich

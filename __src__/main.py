@@ -1,15 +1,30 @@
 import os
+import subprocess
 try: 
   import dankware
   import tabulate
   import rich
   import requests
   import translatepy
-  import subprocess
   import pygame
+  import json
 except ImportError:
   print("Trying to Install all required modules...\n")
-  os.system('python -m pip install -r requirements.txt')
+  headers = {"User-Agent": f"synapse"}
+  reqs = requests.get(f"https://raw.githubusercontent.com/codestantindev/synapse/main/__assets__/reqs.txt", headers=headers, timeout=3).content.decode()
+  os.system(f'python -m pip install -r {reqs}')
+  os.system('cls')
+  print("Creating Config File...")
+try:
+  with open(rf'C:\Users\{os.getlogin()}\synapse-config.json', 'r') as file:
+    print("Found config!")
+except:
+  with open(rf"C:\Users\{os.getlogin()}\synapse-config.json", 'w') as config:
+    config.write("""
+{
+  "intro": "on"
+}""")
+
 
 import time
 
@@ -21,11 +36,65 @@ from dankware import cls, clr, title, get_duration, multithread, err, rm_line
 from dankware import white, white_bright, green, green_bright, red, red_normal
 from pygame import mixer
 
+def settings():
+  cls()
+  banner = """
+  █████████            █████     █████     ███                             
+ ███░░░░░███          ░░███     ░░███     ░░░                              
+░███    ░░░   ██████  ███████   ███████   ████  ████████    ███████  █████ 
+░░█████████  ███░░███░░░███░   ░░░███░   ░░███ ░░███░░███  ███░░███ ███░░  
+ ░░░░░░░░███░███████   ░███      ░███     ░███  ░███ ░███ ░███ ░███░░█████ 
+ ███    ░███░███░░░    ░███ ███  ░███ ███ ░███  ░███ ░███ ░███ ░███ ░░░░███
+░░█████████ ░░██████   ░░█████   ░░█████  █████ ████ █████░░███████ ██████ 
+ ░░░░░░░░░   ░░░░░░     ░░░░░     ░░░░░  ░░░░░ ░░░░ ░░░░░  ░░░░░███░░░░░░  
+                                                           ███ ░███        
+                                                          ░░██████         
+                                                           ░░░░░░          """
+  console = Console(highlight=False)
+  console.print(Align.center(banner), style="blink red")
+
+      
+  with open(rf'C:\Users\{os.getlogin()}\synapse-config.json', 'r') as file:
+    data = json.load(file)
+
+  settings_banner = f"""
+[1] {"Toggle Intro Music (rn.: on)" if data["intro"] == "on" else "Toggle Intro Music (rn.: off)"}      [0] Go Back
+
+"""
+  table = [[settings_banner]]
+  output = tabulate(table, tablefmt='grid')
+  console.print(Align.center(output), style="red")
+  x = input(clr("\n  > Choice: "))
+  if x == "0":
+    main2()
+  if x == "1":
+    if data["intro"] == "on":
+      with open(rf'C:\Users\{os.getlogin()}\synapse-config.json', 'r+') as f:
+          data = json.load(f)
+          data['intro'] = "off" # <--- add `id` value.
+          f.seek(0)        # <--- should reset file position to the beginning.
+          json.dump(data, f, indent=4)
+          f.truncate()
+          settings()
+    else:
+      with open(rf'C:\Users\{os.getlogin()}\synapse-config.json', 'r+') as f:
+          data = json.load(f)
+          data['intro'] = "on" # <--- add `id` value.
+          f.seek(0)        # <--- should reset file position to the beginning.
+          json.dump(data, f, indent=4)
+          f.truncate()
+          settings()
+
 def intro():
-  mixer.init()
-  mixer.music.load('__assets__/intro.mp3') 
-  mixer.music.set_volume(0.010)
-  mixer.music.play()
+  with open(rf'C:\Users\{os.getlogin()}\synapse-config.json', 'r') as file:
+    data = json.load(file)
+  if data["intro"] == "on":
+    mixer.init()
+    mixer.music.load('__assets__/intro.mp3') 
+    mixer.music.set_volume(0.010)
+    mixer.music.play()
+  else:
+    pass
 def error_handler(str: str):
   cls()
   banner = """
@@ -113,12 +182,12 @@ def synapse_motm():
   console.print(Align.center(output), style="red")
      
 def synapse_functions():
-    functions = f"""
+    functions = f"""    
 [1] OS Tools      [2] Discord Tools
 
 [3] DoS Tool      [4] Cracking Tools
 
-           [0] Exit"""
+[5] Settings      [0] Exit"""
     table = [[functions]]
     output = tabulate(table, tablefmt='grid')
     console = Console(highlight=False)
@@ -146,6 +215,10 @@ def synapse_functions():
         error_handler("Work in progress!")
         time.sleep(2)
         main()
+
+      if x == "5":
+        settings()
+
       else:
         main()
     elif x == "":
@@ -158,6 +231,12 @@ def synapse_functions():
 def main():
   title("Synapse Python Tool")
   intro()
+  synapse_banner()
+  synapse_motm()
+  synapse_functions()
+
+def main2():
+  title("Synapse Python Tool")
   synapse_banner()
   synapse_motm()
   synapse_functions()
