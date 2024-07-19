@@ -3,3 +3,4 @@ tabulate
 translatepy
 pygame
 rich
+requests
